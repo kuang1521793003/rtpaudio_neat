@@ -1,0 +1,163 @@
+/*
+ *  $Id$
+ *
+ * SocketAPI implementation for the sctplib.
+ * Copyright (C) 1999-2017 by Thomas Dreibholz
+ *
+ * Realized in co-operation between
+ * - Siemens AG
+ * - University of Essen, Institute of Computer Networking Technology
+ * - University of Applied Sciences, Muenster
+ *
+ * Acknowledgement
+ * This work was partially funded by the Bundesministerium fuer Bildung und
+ * Forschung (BMBF) of the Federal Republic of Germany (Foerderkennzeichen 01AK045).
+ * The authors alone are responsible for the contents.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contact: discussion@sctp.de
+ *          dreibh@iem.uni-due.de
+ *          tuexen@fh-muenster.de
+ *
+ * Purpose: Synchronizable Implementation
+ *
+ */
+
+
+#ifndef SYNCHRONIZABLE_ICC
+#define SYNCHRONIZABLE_ICC
+
+
+#include "synchronizable.h"
+
+
+
+// Debug mode: Print all synchronized() and unsynchronized() calls.
+// #define PRINT_SYNCHRONIZED_CALLS
+
+
+
+// ###### Begin of synchronized access ######################################
+inline void Synchronizable::synchronized()
+{
+#ifndef NO_RECURSIVE_MUTEX
+   pthread_mutex_lock(&Mutex);
+#else
+   if(!Recursive) {
+      pthread_mutex_lock(&Mutex);
+   }
+   else {
+      if(!pthread_equal(Owner,pthread_self())) {
+         pthread_mutex_lock(&Mutex);
+         Owner = pthread_self();
+      }
+   }
+   RecursionLevel++;
+#endif
+}
+
+
+// ###### Try begin of synchronized access ##################################
+inline bool Synchronizable::synchronizedTry()
+{
+#ifndef NO_RECURSIVE_MUTEX
+   const int result = pthread_mutex_trylock(&Mutex);
+#else
+   int result;
+   if(!Recursive) {
+      result = pthread_mutex_trylock(&Mutex);
+      if(result == 0) {
+         Owner = pthread_self();
+         RecursionLevel++;
+      }
+   }
+   else {
+      if(!pthread_equal(Owner,pthread_self())) {
+         result = pthread_mutex_trylock(&Mutex);
+         if(result == 0) {
+            Owner = pthread_self();
+            RecursionLevel++;
+         }
+      }
+      else {
+         RecursionLevel++;
+         result = 0;
+      }
+   }
+#endif
+   return(result == 0);
+}
+
+
+// ###### End of synchronized access ########################################
+inline void Synchronizable::unsynchronized()
+{
+#ifndef NO_RECURSIVE_MUTEX
+   pthread_mutex_unlock(&Mutex);
+#else
+   if(RecursionLevel == 0) {
+#ifndef DISABLE_WARNINGS
+      std::cerr << "ERROR: Synchronizable::unsynchronized() - Mutex is already unlocked!" << std::endl;
+      abort();
+#endif
+   }
+   if(!Recursive) {
+      RecursionLevel--;
+      pthread_mutex_unlock(&Mutex);
+   }
+   else {
+      if(pthread_equal(Owner,pthread_self())) {
+         RecursionLevel--;
+         if(RecursionLevel == 0) {
+            Owner = 0;
+            pthread_mutex_unlock(&Mutex);
+         }
+      }
+      else {
+#ifndef DISABLE_WARNINGS
+         std::cerr << "ERROR: Synchronizable::unsynchronized() - Mutex is not owned!" << std::endl;
+         abort();
+#endif
+      }
+   }
+#endif
+}
+
+
+// ###### Get name ##########################################################
+inline const char* Synchronizable::getName() const
+{
+   if(MutexName[0] != 0x00) {
+      return((const char*)&MutexName);
+   }
+   else {
+      return("Unnamed Mutex");
+   }
+}
+
+
+// ###### Set name ##########################################################
+inline void Synchronizable::setName(const char* name)
+{
+   if(name != NULL) {
+      snprintf((char*)&MutexName,sizeof(MutexName),"%s",name);
+   }
+   else {
+      MutexName[0] = 0x00;
+   }
+}
+
+
+#endif

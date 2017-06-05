@@ -1,0 +1,223 @@
+/*
+ *  $Id$
+ *
+ * SocketAPI implementation for the sctplib.
+ * Copyright (C) 1999-2017 by Thomas Dreibholz
+ *
+ * Realized in co-operation between
+ * - Siemens AG
+ * - University of Essen, Institute of Computer Networking Technology
+ * - University of Applied Sciences, Muenster
+ *
+ * Acknowledgement
+ * This work was partially funded by the Bundesministerium fuer Bildung und
+ * Forschung (BMBF) of the Federal Republic of Germany (Foerderkennzeichen 01AK045).
+ * The authors alone are responsible for the contents.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contact: discussion@sctp.de
+ *          dreibh@iem.uni-due.de
+ *          tuexen@fh-muenster.de
+ *
+ * Purpose: Strings Implementation
+ *
+ */
+
+
+#ifndef TDSTRINGS_ICC
+#define TDSTRINGS_ICC
+
+
+#include "tdstrings.h"
+
+#include <strings.h>
+
+
+// ###### Get string data ###################################################
+inline const char* String::getData() const
+{
+   return Data;
+}
+
+
+// ###### Set string data ###################################################
+inline void String::setData(char* string)
+{
+   Data = string;
+}
+
+
+// ###### Get length ########################################################
+inline cardinal String::length() const
+{
+   return(stringLength(Data));
+}
+
+
+// ###### Check, if string data is NULL #####################################
+inline bool String::isNull() const
+{
+   return(Data == NULL);
+}
+
+
+// ###### Find first occurrence of a char in String #########################
+inline integer String::index(const char c) const
+{
+   if(Data != NULL) {
+      integer position = 0;
+      while(Data[position] != c) {
+         if(Data[position] == 0x00) {
+            return(-1);
+         }
+         position++;
+      }
+      return(position);
+   }
+   return(-1);
+}
+
+
+// ###### Find last occurrence of a char in String ##########################
+inline integer String::rindex(const char c) const
+{
+   if(Data != NULL) {
+      integer position = stringLength(Data);
+      while(Data[position] != c) {
+         if(position == 0) {
+            return(-1);
+         }
+         position--;
+      }
+      return(position);
+   }
+   return(-1);
+}
+
+
+// ###### Find first occurrence of a string in String #######################
+inline integer String::find(const String& string) const
+{
+   const char* str = string.getData();
+   if((Data != NULL) && (str != NULL)) {
+      const char* found = ::strstr(Data,str);
+      if(found == NULL) {
+         return(-1);
+      }
+      else {
+         return((integer)(found - Data));
+      }
+   }
+   return(-1);
+}
+
+
+// ###### Get part from start to end of string ##############################
+String String::mid(cardinal start) const
+{
+   return(mid(start,0xffffffff));
+}
+
+
+// ###### "=="-operator #####################################################
+inline int String::operator==(const String& string) const
+{
+   return(stringCompare(Data,string.getData()) == 0);
+}
+
+
+// ###### "!="-operator #####################################################
+inline int String::operator!=(const String& string) const
+{
+   return(stringCompare(Data,string.getData()) != 0);
+}
+
+
+// ###### "<"-operator ######################################################
+inline int String::operator<(const String& string) const
+{
+   return(stringCompare(Data,string.getData()) < 0);
+}
+
+
+// ###### "<="-operator #####################################################
+inline int String::operator<=(const String& string) const
+{
+   return(stringCompare(Data,string.getData()) <= 0);
+}
+
+
+// ###### ">"-operator ######################################################
+inline int String::operator>(const String& string) const
+{
+   return(stringCompare(Data,string.getData()) > 0);
+}
+
+
+// ###### ">="-operator #####################################################
+inline int String::operator>=(const String& string) const
+{
+   return(stringCompare(Data,string.Data) >= 0);
+}
+
+
+// ###### "[]"-operator #####################################################
+inline char String::operator[](const int index) const
+{
+   return(Data[index]);
+}
+
+
+// ###### Get length of a string ############################################
+inline cardinal String::stringLength(const char* string)
+{
+   if(string == NULL) {
+      return(0);
+   }
+   else {
+      return(strlen(string));
+   }
+}
+
+
+// ###### Compare two strings ###############################################
+inline integer String::stringCompare(const char* str1, const char* str2)
+{
+   if((str1 == NULL) && (str2 == NULL)) {
+      return(0);
+   }
+   else if(str1 == NULL) {
+      return(-1);
+   }
+   else if(str2 == NULL) {
+      return(1);
+   }
+   return(strcmp(str1,str2));
+}
+
+
+// ###### Duplicate a string ################################################
+inline char* String::stringDuplicate(const char* string)
+{
+   if(string == NULL) {
+      return(NULL);
+   }
+   else {
+      return(strdup(string));
+   }
+}
+
+
+#endif

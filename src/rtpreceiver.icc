@@ -1,0 +1,165 @@
+// ##########################################################################
+// ####                                                                  ####
+// ####                      RTP Audio Server Project                    ####
+// ####                    ============================                  ####
+// ####                                                                  ####
+// #### RTP Receiver Inlines                                             ####
+// ####                                                                  ####
+// ####           Copyright (C) 1999-2017 by Thomas Dreibholz            ####
+// ####                                                                  ####
+// #### Contact:                                                         ####
+// ####    EMail: dreibh@iem.uni-due.de                                  ####
+// ####    WWW:   http://www.iem.uni-due.de/~dreibh/rtpaudio             ####
+// ####                                                                  ####
+// #### ---------------------------------------------------------------- ####
+// ####                                                                  ####
+// #### This program is free software: you can redistribute it and/or    ####
+// #### modify it under the terms of the GNU General Public License as   ####
+// #### published by the Free Software Foundation, either version 3 of   ####
+// #### the License, or (at your option) any later version.              ####
+// ####                                                                  ####
+// #### This program is distributed in the hope that it will be useful,  ####
+// #### but WITHOUT ANY WARRANTY; without even the implied warranty of   ####
+// #### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    ####
+// #### GNU General Public License for more details.                     ####
+// ####                                                                  ####
+// #### You should have received a copy of the GNU General Public        ####
+// #### License along with this program.  If not, see                    ####
+// #### <http://www.gnu.org/licenses/>.                                  ####
+// ####                                                                  ####
+// ##########################################################################
+// $Id$
+
+
+#ifndef RTPRECEIVER_ICC
+#define RTPRECEIVER_ICC
+
+
+#include "tdsystem.h"
+#include "rtpreceiver.h"
+
+
+// ###### Get current position ##############################################
+inline card64 RTPReceiver::getPosition()
+{
+   synchronized();
+   const card64 position = Decoder->getPosition();
+   unsynchronized();
+   return(position);
+}
+
+
+// ###### Get maximum position ##############################################
+inline card64 RTPReceiver::getMaxPosition()
+{
+   synchronized();
+   const card64 position = Decoder->getMaxPosition();
+   unsynchronized();
+   return(position);
+}
+
+
+// ###### Get bytes received ################################################
+inline card64 RTPReceiver::getBytesReceived(const cardinal layer)
+{
+   synchronized();
+   card64 bytes;
+   if(layer < RTPConstants::RTPMaxQualityLayers) {
+      bytes = BytesReceived[layer];
+   }
+   else {
+      bytes = 0;
+      for(cardinal i = 0;i < Layers;i++) {
+         bytes += BytesReceived[i];
+      }
+   }
+   unsynchronized();
+   return(bytes);
+}
+
+
+// ###### Reset bytes received ##############################################
+inline void RTPReceiver::resetBytesReceived(const cardinal layer)
+{
+   synchronized();
+   if(layer < RTPConstants::RTPMaxQualityLayers) {
+      BytesReceived[layer] = 0;
+   }
+   unsynchronized();
+}
+
+
+// ###### Get packets received ##############################################
+inline card64 RTPReceiver::getPacketsReceived(const cardinal layer)
+{
+   synchronized();
+   card64 packets;
+   if(layer < RTPConstants::RTPMaxQualityLayers) {
+      packets = PacketsReceived[layer];
+   }
+   else {
+      packets = 0;
+      for(cardinal i = 0;i < Layers;i++) {
+         packets += PacketsReceived[i];
+      }
+   }
+   unsynchronized();
+   return(packets);
+}
+
+
+// ###### Reset packets received ############################################
+inline void RTPReceiver::resetPacketsReceived(const cardinal layer)
+{
+   synchronized();
+   if(layer < RTPConstants::RTPMaxQualityLayers) {
+      PacketsReceived[layer] = 0;
+   }
+   unsynchronized();
+}
+
+
+// ###### Get number of layers ##############################################
+inline cardinal RTPReceiver::getLayers()
+{
+   cardinal layers;
+   synchronized();
+   layers = Layers;
+   unsynchronized();
+   return(layers);
+}
+
+
+// ###### Get flow info #####################################################
+inline InternetFlow RTPReceiver::getInternetFlow(const cardinal layer)
+{
+   InternetFlow flow;
+   if(layer >= RTPConstants::RTPMaxQualityLayers) {
+      flow.reset();
+   }
+   else {
+      synchronized();
+      flow = Flow[layer];
+      unsynchronized();
+   }
+   return(flow);
+}
+
+
+// ###### Get source state info #############################################
+inline SourceStateInfo RTPReceiver::getSSI(const cardinal layer)
+{
+   SourceStateInfo ssi;
+   if(layer >= RTPConstants::RTPMaxQualityLayers) {
+      ssi.reset();
+   }
+   else {
+      synchronized();
+      ssi = SSI[layer];
+      unsynchronized();
+   }
+   return(ssi);
+}
+
+
+#endif

@@ -1,0 +1,226 @@
+/*
+ *  $Id$
+ *
+ * SocketAPI implementation for the sctplib.
+ * Copyright (C) 1999-2017 by Thomas Dreibholz
+ *
+ * Realized in co-operation between
+ * - Siemens AG
+ * - University of Essen, Institute of Computer Networking Technology
+ * - University of Applied Sciences, Muenster
+ *
+ * Acknowledgement
+ * This work was partially funded by the Bundesministerium fuer Bildung und
+ * Forschung (BMBF) of the Federal Republic of Germany (Foerderkennzeichen 01AK045).
+ * The authors alone are responsible for the contents.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contact: discussion@sctp.de
+ *          dreibh@iem.uni-due.de
+ *          tuexen@fh-muenster.de
+ *
+ * Purpose: Message Inlines
+ *
+ */
+
+
+#ifndef TDMESSAGE_ICC
+#define TDMESSAGE_ICC
+
+
+#include "tdsystem.h"
+#include "tdmessage.h"
+
+#include <assert.h>
+
+
+
+// ###### Constructor #######################################################
+template<const size_t size> inline SocketMessage<size>::SocketMessage()
+{
+   clear();
+}
+
+
+// ###### Destructor ########################################################
+template<const size_t size> inline void SocketMessage<size>::clear()
+{
+   Header.msg_name       = NULL;
+   Header.msg_namelen    = 0;
+   Header.msg_iov        = NULL;
+   Header.msg_iovlen     = 0;
+   Header.msg_control    = NULL;
+   Header.msg_controllen = 0;
+   Header.msg_flags      = 0;
+   NextMsg               = NULL;
+   if(size > 0) {
+      memset(&Control, 0x00, sizeof(Control));
+   }
+}
+
+
+// ###### Get address #######################################################
+template<const size_t size> inline SocketAddress* SocketMessage<size>::getAddress() const
+{
+   return(SocketAddress::createSocketAddress(
+             0, (sockaddr*)&Address,sizeof(Address)));
+}
+
+
+// ###### Set address #######################################################
+template<const size_t size> inline void SocketMessage<size>::setAddress(const SocketAddress& address,
+                                                                        const integer        family)
+{
+   Header.msg_namelen = address.getSystemAddress((sockaddr*)&Address,sizeof(Address),family);
+   Header.msg_name    = &Address;
+}
+
+
+// ###### Set buffer ########################################################
+template<const size_t size> inline void SocketMessage<size>::setBuffer(void* buffer, const size_t buffersize)
+{
+   Header.msg_iov    = &IOVector;
+   Header.msg_iovlen = 1;
+   IOVector.iov_base = buffer;
+   IOVector.iov_len  = buffersize;
+}
+
+
+// ###### Add cmsg header ###################################################
+template<const size_t size> inline void* SocketMessage<size>::addHeader(
+                                            const size_t payloadLength,
+                                            const int    level,
+                                            const int    type)
+{
+   if(NextMsg == NULL) {   // Initialize
+      Header.msg_control    = (char*)&Control;
+      Header.msg_controllen = size;
+      NextMsg = CFirstHeader(&Header);
+      Header.msg_controllen = 0;
+   }
+   assert(NextMsg != NULL);
+
+   if(Header.msg_controllen > size) {
+      std::cerr << "WARNING: SocketMessage<" << size << ">:addHeader() - Too much control data!" << std::endl;
+      return(NULL);
+   }
+
+   cmsghdr* cmsg = NextMsg;
+   cmsg->cmsg_len   = CMSG_LEN(payloadLength);
+   cmsg->cmsg_level = level;
+   cmsg->cmsg_type  = type;
+
+   Header.msg_controllen += cmsg->cmsg_len;
+   NextMsg = CNextHeader(&Header, cmsg);
+
+   return(CData(cmsg));
+}
+
+
+// ###### Get first cmsg header #############################################
+template<const size_t size> inline cmsghdr* SocketMessage<size>::getFirstHeader()
+{
+   if(Header.msg_controllen > 0) {
+      return(CMSG_FIRSTHDR(&Header));
+   }
+   return(NULL);
+}
+
+
+// ###### Get next cmsg header ##############################################
+template<const size_t size> inline cmsghdr* SocketMessage<size>::getNextHeader(cmsghdr* prev)
+{
+   return(CMSG_NXTHDR(&Header,prev));
+}
+
+
+// ###### Get flags #########################################################
+template<const size_t size> inline int SocketMessage<size>::getFlags() const
+{
+   return(Header.msg_flags);
+}
+
+
+// ###### Set flags #########################################################
+template<const size_t size> inline void SocketMessage<size>::setFlags(const int flags)
+{
+   Header.msg_flags = flags;
+}
+
+
+// ###### Wrapper for CMSG_SPACE ############################################
+inline static size_t CSpace(const size_t payloadLength)
+{
+#ifdef SOLARIS
+   return(_CMSG_DATA_ALIGN(sizeof(struct cmsghdr)) + _CMSG_DATA_ALIGN(payloadLength));
+#else
+   return(CMSG_SPACE(payloadLength));
+#endif
+}
+
+
+// ###### Wrapper for CMSG_LEN ##############################################
+inline static size_t CLength(const size_t payloadLength)
+{
+#ifdef SOLARIS
+   return(_CMSG_DATA_ALIGN(sizeof(struct cmsghdr)) + payloadLength);
+#else
+   return(CMSG_LEN(payloadLength));
+#endif
+}
+
+
+// ###### Wrapper for CMSG_DATA #############################################
+inline static void* CData(cmsghdr* cmsg)
+{
+   return(CMSG_DATA(cmsg));
+}
+
+
+// ###### Wrapper for CMSG_FIRSTHDR #########################################
+inline static cmsghdr* CFirstHeader(msghdr* header)
+{
+   return(CMSG_FIRSTHDR(header));
+}
+
+
+// ###### Wrapper for CMSG_NXTHDR ###########################################
+inline static cmsghdr* CNextHeader(msghdr* header, const cmsghdr* cmsg)
+{
+   return(CMSG_NXTHDR(header,(cmsghdr*)cmsg));
+}
+
+
+// ###### Wrapper for CMSG_DATA #############################################
+inline static const void* CData(const cmsghdr* cmsg)
+{
+   return(CMSG_DATA(cmsg));
+}
+
+
+// ###### Wrapper for CMSG_FIRSTHDR #########################################
+inline static const cmsghdr* CFirstHeader(const msghdr* header)
+{
+   return(CMSG_FIRSTHDR(header));
+}
+
+
+// ###### Wrapper for CMSG_NXTHDR ###########################################
+inline static const cmsghdr* CNextHeader(const msghdr* header, const cmsghdr* cmsg)
+{
+   return(CMSG_NXTHDR((msghdr*)header,(cmsghdr*)cmsg));
+}
+
+#endif

@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC  -std=c++11 -Wall -Werror -Wno-unused-function -Wno-unused-parameter -Wno-overlength-strings -Wno-array-bounds -g  -shared -Wl,-soname,librtpcommon.so.2 -o "CMakeFiles/CMakeRelink.dir/librtpcommon.so.2.0.0~beta2.8" CMakeFiles/rtpcommon.dir/rtcppacket.cc.o CMakeFiles/rtpcommon.dir/rtppacket.cc.o CMakeFiles/rtpcommon.dir/rtpcommon_automoc.cpp.o -lpthread 

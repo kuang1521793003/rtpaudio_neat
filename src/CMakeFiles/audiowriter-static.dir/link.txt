@@ -1,0 +1,2 @@
+/usr/bin/ar qc libaudiowriter-static.a  CMakeFiles/audiowriter-static.dir/audiowriterinterface.cc.o CMakeFiles/audiowriter-static.dir/multiaudiowriter.cc.o CMakeFiles/audiowriter-static.dir/audiodebug.cc.o CMakeFiles/audiowriter-static.dir/audiodevice.cc.o CMakeFiles/audiowriter-static.dir/audiomixer.cc.o CMakeFiles/audiowriter-static.dir/audionull.cc.o CMakeFiles/audiowriter-static.dir/spectrumanalyzer.cc.o CMakeFiles/audiowriter-static.dir/fft.cc.o CMakeFiles/audiowriter-static.dir/audiowriter-static_automoc.cpp.o
+/usr/bin/ranlib libaudiowriter-static.a

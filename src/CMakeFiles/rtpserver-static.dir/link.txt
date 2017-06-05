@@ -1,0 +1,2 @@
+/usr/bin/ar qc librtpserver-static.a  CMakeFiles/rtpserver-static.dir/abstractlayerdescription.cc.o CMakeFiles/rtpserver-static.dir/abstractqosdescription.cc.o CMakeFiles/rtpserver-static.dir/bandwidthinfo.cc.o CMakeFiles/rtpserver-static.dir/resourceutilizationpoint.cc.o CMakeFiles/rtpserver-static.dir/rtcpabstractserver.cc.o CMakeFiles/rtpserver-static.dir/rtcpreceiver.cc.o CMakeFiles/rtpserver-static.dir/rtpsender.cc.o CMakeFiles/rtpserver-static.dir/trafficshaper.cc.o CMakeFiles/rtpserver-static.dir/rtpserver-static_automoc.cpp.o
+/usr/bin/ranlib librtpserver-static.a

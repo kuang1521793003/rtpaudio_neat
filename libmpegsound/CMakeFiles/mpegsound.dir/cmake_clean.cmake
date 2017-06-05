@@ -1,0 +1,42 @@
+file(REMOVE_RECURSE
+  "mpegsound_automoc.cpp"
+  "mpegsound-static_automoc.cpp"
+  "CMakeFiles/mpegsound.dir/soundinputstream.cc.o"
+  "CMakeFiles/mpegsound.dir/fileinput.cc.o"
+  "CMakeFiles/mpegsound.dir/httpinput.cc.o"
+  "CMakeFiles/mpegsound.dir/soundplayer.cc.o"
+  "CMakeFiles/mpegsound.dir/rawplayer.cc.o"
+  "CMakeFiles/mpegsound.dir/rawtofile.cc.o"
+  "CMakeFiles/mpegsound.dir/mpegtable.cc.o"
+  "CMakeFiles/mpegsound.dir/filter.cc.o"
+  "CMakeFiles/mpegsound.dir/filter_2.cc.o"
+  "CMakeFiles/mpegsound.dir/mpegtoraw.cc.o"
+  "CMakeFiles/mpegsound.dir/mpeglayer1.cc.o"
+  "CMakeFiles/mpegsound.dir/mpeglayer2.cc.o"
+  "CMakeFiles/mpegsound.dir/mpeglayer3.cc.o"
+  "CMakeFiles/mpegsound.dir/bitwindow.cc.o"
+  "CMakeFiles/mpegsound.dir/huffmantable.cc.o"
+  "CMakeFiles/mpegsound.dir/wavetoraw.cc.o"
+  "CMakeFiles/mpegsound.dir/sidplayer.cc.o"
+  "CMakeFiles/mpegsound.dir/fileplayer.cc.o"
+  "CMakeFiles/mpegsound.dir/nasplayer.cc.o"
+  "CMakeFiles/mpegsound.dir/oggplayer.cc.o"
+  "CMakeFiles/mpegsound.dir/xingheader.cc.o"
+  "CMakeFiles/mpegsound.dir/esdplayer.cc.o"
+  "CMakeFiles/mpegsound.dir/sdlplayer.cc.o"
+  "CMakeFiles/mpegsound.dir/cyclicbuffer.cc.o"
+  "CMakeFiles/mpegsound.dir/mpegsound_automoc.cpp.o"
+  "libmpegsound.pdb"
+  "libmpegsound.so"
+  "libmpegsound.so.2.0.0~beta2.8"
+  "libmpegsound.so.2"
+  "libmpegsound.pdb"
+  "CMakeFiles/CMakeRelink.dir/libmpegsound.so"
+  "CMakeFiles/CMakeRelink.dir/libmpegsound.so.2.0.0~beta2.8"
+  "CMakeFiles/CMakeRelink.dir/libmpegsound.so.2"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/mpegsound.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

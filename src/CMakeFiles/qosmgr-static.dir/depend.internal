@@ -13,7 +13,6 @@ src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o
  /home/bao1/rtpaudio/src/bandwidthmanager.icc
  /home/bao1/rtpaudio/src/condition.h
  /home/bao1/rtpaudio/src/condition.icc
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/frameratescalabilityinterface.h
  /home/bao1/rtpaudio/src/framesizescalabilityinterface.h
  /home/bao1/rtpaudio/src/internetaddress.h
@@ -66,7 +65,6 @@ src/CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o
  /home/bao1/rtpaudio/src/breakdetector.h
  /home/bao1/rtpaudio/src/condition.h
  /home/bao1/rtpaudio/src/condition.icc
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/internetaddress.h
  /home/bao1/rtpaudio/src/internetaddress.icc
  /home/bao1/rtpaudio/src/internetflow.h
@@ -132,7 +130,6 @@ src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o
  /home/bao1/rtpaudio/src/abstractqosdescription.icc
  /home/bao1/rtpaudio/src/bandwidthinfo.h
  /home/bao1/rtpaudio/src/bandwidthinfo.icc
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/frameratescalabilityinterface.h
  /home/bao1/rtpaudio/src/framesizescalabilityinterface.h
  /home/bao1/rtpaudio/src/internetaddress.h

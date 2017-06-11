@@ -19,7 +19,6 @@ src/CMakeFiles/tdtoolbox.dir/condition.cc.o
  /home/bao1/rtpaudio/src/thread.h
  /home/bao1/rtpaudio/src/thread.icc
 src/CMakeFiles/tdtoolbox.dir/internetaddress.cc.o
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/internetaddress.cc
  /home/bao1/rtpaudio/src/internetaddress.h
  /home/bao1/rtpaudio/src/internetaddress.icc
@@ -72,7 +71,6 @@ src/CMakeFiles/tdtoolbox.dir/ringbuffer.cc.o
  /home/bao1/rtpaudio/src/synchronizable.icc
  /home/bao1/rtpaudio/src/tdsystem.h
 src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/internetaddress.h
  /home/bao1/rtpaudio/src/internetaddress.icc
  /home/bao1/rtpaudio/src/internetflow.h
@@ -95,7 +93,6 @@ src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o
  /home/bao1/rtpaudio/src/tools.h
  /home/bao1/rtpaudio/src/tools.icc
 src/CMakeFiles/tdtoolbox.dir/socketaddress.cc.o
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/internetaddress.h
  /home/bao1/rtpaudio/src/internetaddress.icc
  /home/bao1/rtpaudio/src/portableaddress.h
@@ -118,7 +115,6 @@ src/CMakeFiles/tdtoolbox.dir/synchronizable.cc.o
  /home/bao1/rtpaudio/src/thread.h
  /home/bao1/rtpaudio/src/thread.icc
 src/CMakeFiles/tdtoolbox.dir/tdsocket.cc.o
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/internetaddress.h
  /home/bao1/rtpaudio/src/internetaddress.icc
  /home/bao1/rtpaudio/src/internetflow.h

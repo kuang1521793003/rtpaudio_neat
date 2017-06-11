@@ -24,7 +24,6 @@ src/CMakeFiles/rtpaudioserver-static.dir/audioserver.cc.o: src/condition.h
 src/CMakeFiles/rtpaudioserver-static.dir/audioserver.cc.o: src/condition.icc
 src/CMakeFiles/rtpaudioserver-static.dir/audioserver.cc.o: src/encoderinterface.h
 src/CMakeFiles/rtpaudioserver-static.dir/audioserver.cc.o: src/encoderrepositoryinterface.h
-src/CMakeFiles/rtpaudioserver-static.dir/audioserver.cc.o: src/ext_socket.h
 src/CMakeFiles/rtpaudioserver-static.dir/audioserver.cc.o: src/frameratescalabilityinterface.h
 src/CMakeFiles/rtpaudioserver-static.dir/audioserver.cc.o: src/framesizescalabilityinterface.h
 src/CMakeFiles/rtpaudioserver-static.dir/audioserver.cc.o: src/internetaddress.h

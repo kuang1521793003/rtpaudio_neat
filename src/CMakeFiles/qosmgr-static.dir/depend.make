@@ -12,7 +12,6 @@ src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o: src/bandwidthmanager.h
 src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o: src/bandwidthmanager.icc
 src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o: src/condition.h
 src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o: src/condition.icc
-src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o: src/ext_socket.h
 src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o: src/frameratescalabilityinterface.h
 src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o: src/framesizescalabilityinterface.h
 src/CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o: src/internetaddress.h
@@ -65,7 +64,6 @@ src/CMakeFiles/qosmgr-static.dir/qosmgr-static_automoc.cpp.o: src/qosmgr-static_
 src/CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o: src/breakdetector.h
 src/CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o: src/condition.h
 src/CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o: src/condition.icc
-src/CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o: src/ext_socket.h
 src/CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o: src/internetaddress.h
 src/CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o: src/internetaddress.icc
 src/CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o: src/internetflow.h
@@ -131,7 +129,6 @@ src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o: src/abstractqosdescript
 src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o: src/abstractqosdescription.icc
 src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o: src/bandwidthinfo.h
 src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o: src/bandwidthinfo.icc
-src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o: src/ext_socket.h
 src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o: src/frameratescalabilityinterface.h
 src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o: src/framesizescalabilityinterface.h
 src/CMakeFiles/qosmgr-static.dir/streamdescription.cc.o: src/internetaddress.h

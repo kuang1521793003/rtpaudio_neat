@@ -6,34 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/bao1/rtpaudio/src/ext_socket.h
-sys/types.h
--
-sys/socket.h
--
-sys/uio.h
--
-sys/fcntl.h
--
-sys/time.h
--
-inttypes.h
--
-netinet/in.h
--
-poll.h
--
-sys/types.h
--
-sys/socket.h
--
-netinet/in.h
--
-sys/uio.h
--
-netinet/sctp.h
--
-
 /home/bao1/rtpaudio/src/internetaddress.h
 tdsystem.h
 /home/bao1/rtpaudio/src/tdsystem.h
@@ -149,8 +121,6 @@ internetaddress.h
 /home/bao1/rtpaudio/src/internetaddress.h
 internetflow.h
 /home/bao1/rtpaudio/src/internetflow.h
-ext_socket.h
-/home/bao1/rtpaudio/src/ext_socket.h
 fcntl.h
 -
 tdsocket.icc
@@ -159,8 +129,8 @@ tdsocket.icc
 /home/bao1/rtpaudio/src/tdsocket.icc
 tdsocket.h
 /home/bao1/rtpaudio/src/tdsocket.h
-ext_socket.h
-/home/bao1/rtpaudio/src/ext_socket.h
+neat-socketapi.h
+-
 fcntl.h
 -
 sys/ioctl.h

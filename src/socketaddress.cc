@@ -40,11 +40,24 @@
 #include "socketaddress.h"
 #include "internetaddress.h"
 #include "unixaddress.h"
-#include "ext_socket.h"
+//#include "ext_socket.h"
+
+#include <neat-socketapi.h>
 
 #include <sys/socket.h>
 
-
+static const char* properties = "{\
+    \"transport\": [\
+        {\
+            \"value\": \"SCTP\",\
+            \"precedence\": 1\
+        },\
+        {\
+            \"value\": \"TCP\",\
+            \"precedence\": 1\
+        }\
+    ]\
+}";\
 
 // ###### Socket address destructor #######################################
 SocketAddress::~SocketAddress()
@@ -93,21 +106,29 @@ SocketAddress* SocketAddress::getLocalAddress(const SocketAddress& peer)
    const int family = peer.getFamily();
    SocketAddress* address = createSocketAddress(family);
    if(address != NULL) {
-      int sd = ext_socket(family,SOCK_DGRAM,0);
+      //int sd = ext_socket(family,SOCK_DGRAM,0);
+      int sd = nsa_socket(0, 0, 0, properties);
       if(socket >= 0) {
          sockaddr_storage socketAddress;
          socklen_t        socketAddressLength =
                              peer.getSystemAddress((sockaddr*)&socketAddress,SocketAddress::MaxSockLen,
                                                    family);
          if(socketAddressLength > 0) {
-            if(ext_connect(sd,(sockaddr*)&socketAddress,socketAddressLength) == 0) {
+            /*if(ext_connect(sd,(sockaddr*)&socketAddress,socketAddressLength) == 0) {
                if(ext_getsockname(sd,(sockaddr*)&socketAddress,&socketAddressLength) == 0) {
                   address->setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
                   address->setPort(0);
                }
+            }*/
+            if(nsa_connectn(sd,(sockaddr*)&socketAddress,7500,NULL,NULL,0) == 0) {
+               if(nsa_getladdrs(sd,0,(sockaddr*)&socketAddress) >= 0) {
+                  address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
+                  address.setPort(0);
+               }
             }
          }
-         ext_close(sd);
+         //ext_close(sd);
+         nsa_close(sd);
       }
    }
    return(address);

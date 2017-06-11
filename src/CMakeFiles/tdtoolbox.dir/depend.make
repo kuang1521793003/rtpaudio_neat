@@ -18,7 +18,6 @@ src/CMakeFiles/tdtoolbox.dir/condition.cc.o: src/tdsystem.h
 src/CMakeFiles/tdtoolbox.dir/condition.cc.o: src/thread.h
 src/CMakeFiles/tdtoolbox.dir/condition.cc.o: src/thread.icc
 
-src/CMakeFiles/tdtoolbox.dir/internetaddress.cc.o: src/ext_socket.h
 src/CMakeFiles/tdtoolbox.dir/internetaddress.cc.o: src/internetaddress.cc
 src/CMakeFiles/tdtoolbox.dir/internetaddress.cc.o: src/internetaddress.h
 src/CMakeFiles/tdtoolbox.dir/internetaddress.cc.o: src/internetaddress.icc
@@ -71,7 +70,6 @@ src/CMakeFiles/tdtoolbox.dir/ringbuffer.cc.o: src/synchronizable.h
 src/CMakeFiles/tdtoolbox.dir/ringbuffer.cc.o: src/synchronizable.icc
 src/CMakeFiles/tdtoolbox.dir/ringbuffer.cc.o: src/tdsystem.h
 
-src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o: src/ext_socket.h
 src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o: src/internetaddress.h
 src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o: src/internetaddress.icc
 src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o: src/internetflow.h
@@ -94,7 +92,6 @@ src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o: src/tdsystem.h
 src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o: src/tools.h
 src/CMakeFiles/tdtoolbox.dir/seqnumvalidator.cc.o: src/tools.icc
 
-src/CMakeFiles/tdtoolbox.dir/socketaddress.cc.o: src/ext_socket.h
 src/CMakeFiles/tdtoolbox.dir/socketaddress.cc.o: src/internetaddress.h
 src/CMakeFiles/tdtoolbox.dir/socketaddress.cc.o: src/internetaddress.icc
 src/CMakeFiles/tdtoolbox.dir/socketaddress.cc.o: src/portableaddress.h
@@ -117,7 +114,6 @@ src/CMakeFiles/tdtoolbox.dir/synchronizable.cc.o: src/tdsystem.h
 src/CMakeFiles/tdtoolbox.dir/synchronizable.cc.o: src/thread.h
 src/CMakeFiles/tdtoolbox.dir/synchronizable.cc.o: src/thread.icc
 
-src/CMakeFiles/tdtoolbox.dir/tdsocket.cc.o: src/ext_socket.h
 src/CMakeFiles/tdtoolbox.dir/tdsocket.cc.o: src/internetaddress.h
 src/CMakeFiles/tdtoolbox.dir/tdsocket.cc.o: src/internetaddress.icc
 src/CMakeFiles/tdtoolbox.dir/tdsocket.cc.o: src/internetflow.h

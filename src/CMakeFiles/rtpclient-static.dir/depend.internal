@@ -5,7 +5,6 @@ src/CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o
  /home/bao1/rtpaudio/src/condition.h
  /home/bao1/rtpaudio/src/condition.icc
  /home/bao1/rtpaudio/src/decoderinterface.h
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/internetaddress.h
  /home/bao1/rtpaudio/src/internetaddress.icc
  /home/bao1/rtpaudio/src/internetflow.h
@@ -53,7 +52,6 @@ src/CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o
  /home/bao1/rtpaudio/src/condition.h
  /home/bao1/rtpaudio/src/condition.icc
  /home/bao1/rtpaudio/src/decoderinterface.h
- /home/bao1/rtpaudio/src/ext_socket.h
  /home/bao1/rtpaudio/src/internetaddress.h
  /home/bao1/rtpaudio/src/internetaddress.icc
  /home/bao1/rtpaudio/src/internetflow.h

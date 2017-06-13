@@ -120,10 +120,13 @@ SocketAddress* SocketAddress::getLocalAddress(const SocketAddress& peer)
                   address->setPort(0);
                }
             }*/
-            if(nsa_connectn(sd,(sockaddr*)&socketAddress,7500,NULL,NULL,0) == 0) {
-               if(nsa_getladdrs(sd,0,(sockaddr*)&socketAddress) >= 0) {
-                  address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
-                  address.setPort(0);
+            sockaddr_in* sin = (sockaddr_in*)&socketAddress; 
+            uint16_t port=sin->sin_port;
+            char* ip=inet_ntoa(sin->sin_addr);
+            if(nsa_connectn(sd,ip,port,NULL,NULL,0) == 0) {
+               if(nsa_getladdrs(sd,0,(sockaddr**)&socketAddress) >= 0) {
+                  address->setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
+                  address->setPort(0);
                }
             }
          }

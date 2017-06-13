@@ -348,10 +348,10 @@ InternetAddress InternetAddress::getLocalAddress(const InternetAddress& peer)
                address.setPort(0);
             }
          }*/
-         sockaddr_in* info = (sockaddr_in*)&socketAddress; 
-         uint16_t port=info.sin_port;
-         uint32_t ip=inet_ntoa(info.sin_addr);
-         if(nsa_connectn(sd,(char*)&ip,port,NULL,NULL,0) == 0) {
+         sockaddr_in* sin = (sockaddr_in*)&socketAddress; 
+         uint16_t port=sin->sin_port;
+         char* ip=inet_ntoa(sin->sin_addr);
+         if(nsa_connectn(sd,ip,port,NULL,NULL,0) == 0) {
             if(nsa_getladdrs(sd,0,(sockaddr**)&socketAddress) >= 0) {
                address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
                address.setPort(0);

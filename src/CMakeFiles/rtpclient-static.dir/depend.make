@@ -4,7 +4,6 @@
 src/CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o: src/condition.h
 src/CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o: src/condition.icc
 src/CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o: src/decoderinterface.h
-src/CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o: src/ext_socket.h
 src/CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o: src/internetaddress.h
 src/CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o: src/internetaddress.icc
 src/CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o: src/internetflow.h
@@ -52,7 +51,6 @@ src/CMakeFiles/rtpclient-static.dir/rtpclient-static_automoc.cpp.o: src/rtpclien
 src/CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o: src/condition.h
 src/CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o: src/condition.icc
 src/CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o: src/decoderinterface.h
-src/CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o: src/ext_socket.h
 src/CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o: src/internetaddress.h
 src/CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o: src/internetaddress.icc
 src/CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o: src/internetflow.h

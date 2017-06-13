@@ -656,7 +656,10 @@ bool Socket::connect(const SocketAddress& address, const card8 trafficClass)
 
    // ====== Connect ========================================================
    //int result = ext_connect(SocketDescriptor,(sockaddr*)socketAddress,socketAddressLength);
-   int result = nsa_connectn(SocketDescriptor,(sockaddr*)&socketAddress,7500,NULL,NULL,0)
+   sockaddr_in* sin = (sockaddr_in*)&socketAddress; 
+   uint16_t port=sin->sin_port;
+   char* ip=inet_ntoa(sin->sin_addr);
+   int result = nsa_connectn(SocketDescriptor,ip,port,NULL,NULL,0);
    if(result != 0) {
       LastError = errno;
       if(LastError != EINPROGRESS) {

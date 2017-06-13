@@ -1,2 +1,0 @@
-/usr/bin/ar qc libaudiocodeccommon-static.a  CMakeFiles/audiocodeccommon-static.dir/advancedaudiopacket.cc.o CMakeFiles/audiocodeccommon-static.dir/simpleaudiopacket.cc.o CMakeFiles/audiocodeccommon-static.dir/audiocodeccommon-static_automoc.cpp.o
-/usr/bin/ranlib libaudiocodeccommon-static.a

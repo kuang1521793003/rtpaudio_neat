@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC  -std=c++11 -Wall -Werror -Wno-unused-function -Wno-unused-parameter -Wno-overlength-strings -Wno-array-bounds -g  -shared -Wl,-soname,librtpaudiocommon.so.2 -o "CMakeFiles/CMakeRelink.dir/librtpaudiocommon.so.2.0.0~beta2.8" CMakeFiles/rtpaudiocommon.dir/audioclientapppacket.cc.o CMakeFiles/rtpaudiocommon.dir/rtpaudiocommon_automoc.cpp.o -lpthread 

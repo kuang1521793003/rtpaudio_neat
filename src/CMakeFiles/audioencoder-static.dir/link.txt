@@ -1,2 +1,0 @@
-/usr/bin/ar qc libaudioencoder-static.a  CMakeFiles/audioencoder-static.dir/advancedaudioencoder.cc.o CMakeFiles/audioencoder-static.dir/audioencoderinterface.cc.o CMakeFiles/audioencoder-static.dir/audioencoderrepository.cc.o CMakeFiles/audioencoder-static.dir/simpleaudioencoder.cc.o CMakeFiles/audioencoder-static.dir/audioencoder-static_automoc.cpp.o
-/usr/bin/ranlib libaudioencoder-static.a

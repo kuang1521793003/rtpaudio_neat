@@ -1,2 +1,0 @@
-/usr/bin/ar qc librtpclient-static.a  CMakeFiles/rtpclient-static.dir/rtcpsender.cc.o CMakeFiles/rtpclient-static.dir/rtpreceiver.cc.o CMakeFiles/rtpclient-static.dir/sourcestateinfo.cc.o CMakeFiles/rtpclient-static.dir/rtpclient-static_automoc.cpp.o
-/usr/bin/ranlib librtpclient-static.a

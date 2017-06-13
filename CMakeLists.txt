@@ -3,7 +3,7 @@ PROJECT(rtpaudio)
 
 set(BUILD_MAJOR "2")
 set(BUILD_MINOR "0")
-set(BUILD_PATCH "0~beta2.8")
+set(BUILD_PATCH "0~beta2.9")
 set(BUILD_VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_PATCH})
 
 
@@ -206,6 +206,7 @@ IF (WITH_NEAT)
    IF (NOT HAVE_NEAT_SOCKETAPI_H OR NOT NEAT_SOCKETAPI_LIB)
       MESSAGE(FATAL_ERROR "neat-socketapi not found - neat-socketapi installed?")
    ENDIF()
+   ADD_DEFINITIONS("-DWITH_NEAT")
 ENDIF()
 
 

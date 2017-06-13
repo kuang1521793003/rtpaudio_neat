@@ -1,2 +1,0 @@
-/usr/bin/ar qc libqosmgr-static.a  CMakeFiles/qosmgr-static.dir/bandwidthmanager.cc.o CMakeFiles/qosmgr-static.dir/servicelevelagreement.cc.o CMakeFiles/qosmgr-static.dir/roundtriptimepinger.cc.o CMakeFiles/qosmgr-static.dir/streamdescription.cc.o CMakeFiles/qosmgr-static.dir/qosmgr-static_automoc.cpp.o
-/usr/bin/ranlib libqosmgr-static.a

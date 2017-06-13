@@ -1,2 +1,0 @@
-/usr/bin/ar qc libmediainfo-static.a  CMakeFiles/mediainfo-static.dir/mediainfo.cc.o CMakeFiles/mediainfo-static.dir/mediainfo-static_automoc.cpp.o
-/usr/bin/ranlib libmediainfo-static.a

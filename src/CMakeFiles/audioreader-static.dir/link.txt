@@ -1,2 +1,0 @@
-/usr/bin/ar qc libaudioreader-static.a  CMakeFiles/audioreader-static.dir/audioreaderinterface.cc.o CMakeFiles/audioreader-static.dir/mp3audioreader.cc.o CMakeFiles/audioreader-static.dir/multiaudioreader.cc.o CMakeFiles/audioreader-static.dir/wavaudioreader.cc.o CMakeFiles/audioreader-static.dir/audioreader-static_automoc.cpp.o
-/usr/bin/ranlib libaudioreader-static.a

@@ -1,2 +1,0 @@
-/usr/bin/ar qc librtpaudioclient-static.a  CMakeFiles/rtpaudioclient-static.dir/audioclient.cc.o CMakeFiles/rtpaudioclient-static.dir/rtpaudioclient-static_automoc.cpp.o
-/usr/bin/ranlib librtpaudioclient-static.a

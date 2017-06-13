@@ -1,46 +1,39 @@
-/*
- *  $Id$
- *
- * SocketAPI implementation for the sctplib.
- * Copyright (C) 1999-2017 by Thomas Dreibholz
- *
- * Realized in co-operation between
- * - Siemens AG
- * - University of Essen, Institute of Computer Networking Technology
- * - University of Applied Sciences, Muenster
- *
- * Acknowledgement
- * This work was partially funded by the Bundesministerium fuer Bildung und
- * Forschung (BMBF) of the Federal Republic of Germany (Foerderkennzeichen 01AK045).
- * The authors alone are responsible for the contents.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Contact: discussion@sctp.de
- *          dreibh@iem.uni-due.de
- *          tuexen@fh-muenster.de
- *
- * Purpose: Internet Address Implementation
- *
- */
+// ##########################################################################
+// ####                                                                  ####
+// ####                      RTP Audio Server Project                    ####
+// ####                    ============================                  ####
+// ####                                                                  ####
+// #### Internet Address implementation                                  ####
+// ####                                                                  ####
+// ####           Copyright (C) 1999-2017 by Thomas Dreibholz            ####
+// ####                                                                  ####
+// #### Contact:                                                         ####
+// ####    EMail: dreibh@iem.uni-due.de                                  ####
+// ####    WWW:   http://www.iem.uni-due.de/~dreibh/rtpaudio             ####
+// ####                                                                  ####
+// #### ---------------------------------------------------------------- ####
+// ####                                                                  ####
+// #### This program is free software: you can redistribute it and/or    ####
+// #### modify it under the terms of the GNU General Public License as   ####
+// #### published by the Free Software Foundation, either version 3 of   ####
+// #### the License, or (at your option) any later version.              ####
+// ####                                                                  ####
+// #### This program is distributed in the hope that it will be useful,  ####
+// #### but WITHOUT ANY WARRANTY; without even the implied warranty of   ####
+// #### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    ####
+// #### GNU General Public License for more details.                     ####
+// ####                                                                  ####
+// #### You should have received a copy of the GNU General Public        ####
+// #### License along with this program.  If not, see                    ####
+// #### <http://www.gnu.org/licenses/>.                                  ####
+// ####                                                                  ####
+// ##########################################################################
 
 
 #include "tdsystem.h"
 #include "internetaddress.h"
-//#include "ext_socket.h"
+#include "ext_socket.h"
 
-#include <neat-socketapi.h>
 
 #include <netdb.h>
 #include <netinet/in.h>
@@ -49,19 +42,6 @@
 #include <arpa/nameser.h>
 #include <ctype.h>
 
-
-static const char* properties = "{\
-    \"transport\": [\
-        {\
-            \"value\": \"SCTP\",\
-            \"precedence\": 1\
-        },\
-        {\
-            \"value\": \"TCP\",\
-            \"precedence\": 1\
-        }\
-    ]\
-}";\
 
 // Print note, if IPv6 is not available.
 // #ifdef PRINT_NOIPV6_NOTE
@@ -334,32 +314,21 @@ InternetAddress InternetAddress::getLocalAddress(const InternetAddress& peer)
 {
    InternetAddress address;
 
-   //int sd = ext_socket((UseIPv6 == true) ? AF_INET6 : AF_INET,SOCK_DGRAM,IPPROTO_UDP);
-   int sd = nsa_socket(0, 0, 0, properties);
+   int sd = ext_socket((UseIPv6 == true) ? AF_INET6 : AF_INET,SOCK_DGRAM,IPPROTO_UDP);
    if(socket >= 0) {
       sockaddr_storage socketAddress;
       socklen_t        socketAddressLength =
                           peer.getSystemAddress((sockaddr*)&socketAddress,SocketAddress::MaxSockLen,
                                                 (UseIPv6 == true) ? AF_INET6 : AF_INET);
       if(socketAddressLength > 0) {
-         /*if(ext_connect(sd,(sockaddr*)&socketAddress,socketAddressLength) == 0) {
+         if(ext_connect(sd,(sockaddr*)&socketAddress,socketAddressLength) == 0) {
             if(ext_getsockname(sd,(sockaddr*)&socketAddress,&socketAddressLength) == 0) {
-               address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
-               address.setPort(0);
-            }
-         }*/
-         sockaddr_in* sin = (sockaddr_in*)&socketAddress; 
-         uint16_t port=sin->sin_port;
-         char* ip=inet_ntoa(sin->sin_addr);
-         if(nsa_connectn(sd,ip,port,NULL,NULL,0) == 0) {
-            if(nsa_getladdrs(sd,0,(sockaddr**)&socketAddress) >= 0) {
                address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
                address.setPort(0);
             }
          }
       }
-      //ext_close(sd);
-      nsa_close(sd);
+      ext_close(sd);
    }
 
    return(address);

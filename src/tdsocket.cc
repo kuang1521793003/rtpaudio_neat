@@ -1,39 +1,33 @@
-/*
- *  $Id$
- *
- * SocketAPI implementation for the sctplib.
- * Copyright (C) 2005-2017 by Thomas Dreibholz
- *
- * Realized in co-operation between
- * - Siemens AG
- * - University of Essen, Institute of Computer Networking Technology
- * - University of Applied Sciences, Muenster
- *
- * Acknowledgement
- * This work was partially funded by the Bundesministerium fuer Bildung und
- * Forschung (BMBF) of the Federal Republic of Germany (Foerderkennzeichen 01AK045).
- * The authors alone are responsible for the contents.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Contact: discussion@sctp.de
- *          dreibh@iem.uni-due.de
- *          tuexen@fh-muenster.de
- *
- * Purpose: Socket Implementation
- *
- */
+// ##########################################################################
+// ####                                                                  ####
+// ####                      RTP Audio Server Project                    ####
+// ####                    ============================                  ####
+// ####                                                                  ####
+// #### Socket implementation                                            ####
+// ####                                                                  ####
+// ####           Copyright (C) 1999-2017 by Thomas Dreibholz            ####
+// ####                                                                  ####
+// #### Contact:                                                         ####
+// ####    EMail: dreibh@iem.uni-due.de                                  ####
+// ####    WWW:   http://www.iem.uni-due.de/~dreibh/rtpaudio             ####
+// ####                                                                  ####
+// #### ---------------------------------------------------------------- ####
+// ####                                                                  ####
+// #### This program is free software: you can redistribute it and/or    ####
+// #### modify it under the terms of the GNU General Public License as   ####
+// #### published by the Free Software Foundation, either version 3 of   ####
+// #### the License, or (at your option) any later version.              ####
+// ####                                                                  ####
+// #### This program is distributed in the hope that it will be useful,  ####
+// #### but WITHOUT ANY WARRANTY; without even the implied warranty of   ####
+// #### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    ####
+// #### GNU General Public License for more details.                     ####
+// ####                                                                  ####
+// #### You should have received a copy of the GNU General Public        ####
+// #### License along with this program.  If not, see                    ####
+// #### <http://www.gnu.org/licenses/>.                                  ####
+// ####                                                                  ####
+// ##########################################################################
 
 
 #include "tdsystem.h"
@@ -50,7 +44,6 @@
 #include <net/if.h>
 #include <arpa/inet.h>
 
-#include <neat-socketapi.h>
 
 #if (SYSTEM == OS_Linux)
 #define LINUX_PROC_IPV6_FILE "/proc/net/if_inet6"
@@ -78,18 +71,7 @@
 #define IPV6_LEAVE_GROUP IPV6_DROP_MEMBERSHIP
 #endif
 
-static const char* properties = "{\
-    \"transport\": [\
-        {\
-            \"value\": \"SCTP\",\
-            \"precedence\": 1\
-        },\
-        {\
-            \"value\": \"TCP\",\
-            \"precedence\": 1\
-        }\
-    ]\
-}";\
+
 
 // ###### Socket constructor ################################################
 Socket::Socket()
@@ -176,8 +158,7 @@ bool Socket::create(const integer communicationDomain,
    }
 
    // ====== Create socket ==================================================
-   //SocketDescriptor = ext_socket(Family,socketType,socketProtocol);
-   SocketDescriptor = nsa_socket(0, 0, 0, properties);
+   SocketDescriptor = ext_socket(Family,socketType,socketProtocol);
    if(SocketDescriptor < 0) {
 #ifndef DISABLE_WARNINGS
       std::cerr << "WARNING: Socket::Socket() - Unable to create socket!" << std::endl;
@@ -189,18 +170,14 @@ bool Socket::create(const integer communicationDomain,
 #if (SYSTEM == OS_Linux)
    const int yes = 1;
    // Send and receive IPv6 flow labels.
-   //ext_setsockopt(SocketDescriptor,SOL_IPV6,IPV6_FLOWINFO,&yes,sizeof(yes));
-   //ext_setsockopt(SocketDescriptor,SOL_IPV6,IPV6_FLOWINFO_SEND,&yes,sizeof(yes));
-   nsa_setsockopt(SocketDescriptor,SOL_IPV6,IPV6_FLOWINFO,&yes,sizeof(yes));
-   nsa_setsockopt(SocketDescriptor,SOL_IPV6,IPV6_FLOWINFO_SEND,&yes,sizeof(yes));
+   ext_setsockopt(SocketDescriptor,SOL_IPV6,IPV6_FLOWINFO,&yes,sizeof(yes));
+   ext_setsockopt(SocketDescriptor,SOL_IPV6,IPV6_FLOWINFO_SEND,&yes,sizeof(yes));
    // Receive IPv4 TOS field.
-   //ext_setsockopt(SocketDescriptor,SOL_IP,IP_RECVTOS,&yes,sizeof(yes));
-   nsa_setsockopt(SocketDescriptor,SOL_IP,IP_RECVTOS,&yes,sizeof(yes));
+   ext_setsockopt(SocketDescriptor,SOL_IP,IP_RECVTOS,&yes,sizeof(yes));
 #endif
    if(Family == IPv6) {
       const int no = 0;
-      //ext_setsockopt(SocketDescriptor,IPPROTO_IPV6,IPV6_V6ONLY,&no,sizeof(no));
-      nsa_setsockopt(SocketDescriptor,IPPROTO_IPV6,IPV6_V6ONLY,&no,sizeof(no));
+      ext_setsockopt(SocketDescriptor,IPPROTO_IPV6,IPV6_V6ONLY,&no,sizeof(no));
    }
 
    return(true);
@@ -211,8 +188,7 @@ bool Socket::create(const integer communicationDomain,
 void Socket::close()
 {
    if(SocketDescriptor != -1) {
-      //ext_close(SocketDescriptor);
-      nsa_close(SocketDescriptor);
+      ext_close(SocketDescriptor);
       SocketDescriptor = -1;
    }
    if(Destination != NULL) {
@@ -225,8 +201,7 @@ void Socket::close()
 // ###### Shutdown connection ###############################################
 void Socket::shutdown(const cardinal shutdownLevel)
 {
-   //ext_shutdown(SocketDescriptor,shutdownLevel);
-   nsa_shutdown(SocketDescriptor,shutdownLevel);
+   ext_shutdown(SocketDescriptor,shutdownLevel);
 }
 
 
@@ -256,10 +231,8 @@ bool Socket::bind(const SocketAddress& address)
       for(cardinal i = 0;i < 4 * (MaxAutoSelectPort - MinAutoSelectPort);i++) {
          const cardinal port = random.random32() % (MaxAutoSelectPort - MinAutoSelectPort);
          socketAddress->sin6_port = (card16)htons(port + MinAutoSelectPort);
-         /*result = ext_bind(SocketDescriptor,(sockaddr*)socketAddress,
-                          socketAddressLength);*/
-         result = nsa_bindn(SocketDescriptor,7500,0,
-                          NULL,0);
+         result = ext_bind(SocketDescriptor,(sockaddr*)socketAddress,
+                          socketAddressLength);
          if(result == 0) {
             break;
          }
@@ -273,9 +246,8 @@ bool Socket::bind(const SocketAddress& address)
       if(result != 0) {
          for(cardinal i = Socket::MinAutoSelectPort;i < Socket::MaxAutoSelectPort;i += 2) {
             socketAddress->sin6_port = (card16)htons(i);
-            /*result = ext_bind(SocketDescriptor,(sockaddr*)socketAddress,
-                          socketAddressLength);*/
-            result = nsa_bindn(SocketDescriptor,7500,0,NULL,0);
+            result = ext_bind(SocketDescriptor,(sockaddr*)socketAddress,
+                             socketAddressLength);
             if(result == 0) {
                break;
             }
@@ -289,9 +261,8 @@ bool Socket::bind(const SocketAddress& address)
       }
    }
    else {
-      /*result = ext_bind(SocketDescriptor,(sockaddr*)socketAddress,
-                          socketAddressLength);*/
-      result = nsa_bindn(SocketDescriptor,7500,0,NULL,0);
+      result = ext_bind(SocketDescriptor,(sockaddr*)socketAddress,
+                       socketAddressLength);
       if(result < 0) {
          LastError = errno;
       }
@@ -561,8 +532,7 @@ end:
 // ###### Set socket listing for connections ################################
 bool Socket::listen(const cardinal backlog)
 {
-   //int result = ext_listen(SocketDescriptor,backlog);
-   int result = nsa_listen(SocketDescriptor,backlog);
+   int result = ext_listen(SocketDescriptor,backlog);
    if(result < 0)
       return(false);
 
@@ -579,9 +549,7 @@ Socket* Socket::accept(SocketAddress** address)
    }
    char      socketAddressBuffer[SocketAddress::MaxSockLen];
    socklen_t socketAddressLength = SocketAddress::MaxSockLen;
-   /*int result = ext_accept(SocketDescriptor,(sockaddr*)&socketAddressBuffer,
-                          &socketAddressLength);*/
-   int result = nsa_accept(SocketDescriptor,(sockaddr*)&socketAddressBuffer,
+   int result = ext_accept(SocketDescriptor,(sockaddr*)&socketAddressBuffer,
                           &socketAddressLength);
 
    if(result < 0) {
@@ -604,8 +572,7 @@ Socket* Socket::accept(SocketAddress** address)
 #ifndef DISABLE_WARNINGS
       std::cerr << "WARNING: Socket::accept() - Out of memory!" << std::endl;
 #endif
-      //ext_close(result);
-      nsa_close(result);
+      ext_close(result);
    }
    return(NULL);
 }
@@ -655,11 +622,7 @@ bool Socket::connect(const SocketAddress& address, const card8 trafficClass)
    }
 
    // ====== Connect ========================================================
-   //int result = ext_connect(SocketDescriptor,(sockaddr*)socketAddress,socketAddressLength);
-   sockaddr_in* sin = (sockaddr_in*)&socketAddress; 
-   uint16_t port=sin->sin_port;
-   char* ip=inet_ntoa(sin->sin_addr);
-   int result = nsa_connectn(SocketDescriptor,ip,port,NULL,NULL,0);
+   int result = ext_connect(SocketDescriptor,(sockaddr*)socketAddress,socketAddressLength);
    if(result != 0) {
       LastError = errno;
       if(LastError != EINPROGRESS) {
@@ -709,12 +672,11 @@ ssize_t Socket::receiveMsg(struct msghdr* msg,
                            const integer  flags,
                            const bool     internalCall)
 {
-/*#ifdef SOCKETAPI_MAJOR_VERSION
+#ifdef SOCKETAPI_MAJOR_VERSION
    const int cc = ext_recvmsg2(SocketDescriptor,msg,flags,(internalCall == true) ? 0 : 1);
 #else
    const int cc = ext_recvmsg(SocketDescriptor,msg,flags);
-#endif*/
-const int cc = nsa_recvmsg(SocketDescriptor,msg,flags);
+#endif
    if(cc < 0) {
       LastError = errno;
       return(-LastError);
@@ -820,9 +782,7 @@ ssize_t Socket::send(const void*   buffer,
          newAddress.sin6_flowinfo = htonl((ntohl(newAddress.sin6_flowinfo)
                                            & IPV6_FLOWINFO_FLOWLABEL) |
                                            ((card32)trafficClass << 20));
-         /*ssize_t result = ext_sendto(SocketDescriptor, buffer, length, flags,
-                                     (sockaddr*)&newAddress, sizeof(sockaddr_in6));*/
-         ssize_t result = nsa_sendto(SocketDescriptor, buffer, length, flags,
+         ssize_t result = ext_sendto(SocketDescriptor, buffer, length, flags,
                                      (sockaddr*)&newAddress, sizeof(sockaddr_in6));
          if(result < 0) {
             LastError = errno;
@@ -835,8 +795,7 @@ ssize_t Socket::send(const void*   buffer,
       else if((socketAddress->sin6_family == AF_INET) ||
               (socketAddress->sin6_family == AF_INET6)) {
          setTypeOfService(trafficClass);
-         //ssize_t result = ext_send(SocketDescriptor,buffer,length,flags);
-         ssize_t result = nsa_send(SocketDescriptor,buffer,length,flags);
+         ssize_t result = ext_send(SocketDescriptor,buffer,length,flags);
          setTypeOfService(SendFlow >> 20);
          if(result < 0) {
             LastError = errno;
@@ -847,8 +806,7 @@ ssize_t Socket::send(const void*   buffer,
    }
 
    // ====== Do simple send() without setting traffic class =================
-   //ssize_t result = ext_send(SocketDescriptor,buffer,length,flags);
-   ssize_t result = nsa_send(SocketDescriptor,buffer,length,flags);
+   ssize_t result = ext_send(SocketDescriptor,buffer,length,flags);
    if(result < 0) {
       LastError = errno;
       result    = -LastError;
@@ -884,9 +842,7 @@ ssize_t Socket::sendTo(const void*          buffer,
          newAddress.sin6_flowinfo = htonl((ntohl(newAddress.sin6_flowinfo)
                                            & IPV6_FLOWINFO_FLOWLABEL) |
                                            ((card32)trafficClass << 20));
-         /*ssize_t result = ext_sendto(SocketDescriptor,buffer,length,flags,
-                                      (sockaddr*)&newAddress,sizeof(sockaddr_in6));*/
-         ssize_t result = nsa_sendto(SocketDescriptor,buffer,length,flags,
+         ssize_t result = ext_sendto(SocketDescriptor,buffer,length,flags,
                                       (sockaddr*)&newAddress,sizeof(sockaddr_in6));
          if(result < 0) {
             LastError = errno;
@@ -899,9 +855,7 @@ ssize_t Socket::sendTo(const void*          buffer,
       else if((socketAddress->sin6_family == AF_INET) ||
               (socketAddress->sin6_family == AF_INET6)) {
          setTypeOfService(trafficClass);
-         /*ssize_t result = ext_sendto(SocketDescriptor,buffer,length,flags,
-                                       (sockaddr*)socketAddress,socketAddressLength);*/
-         ssize_t result = nsa_sendto(SocketDescriptor,buffer,length,flags,
+         ssize_t result = ext_sendto(SocketDescriptor,buffer,length,flags,
                                        (sockaddr*)socketAddress,socketAddressLength);
          setTypeOfService(SendFlow >> 20);
          if(result < 0) {
@@ -913,10 +867,8 @@ ssize_t Socket::sendTo(const void*          buffer,
    }
 
    // ====== Do simple send() without setting traffic class =================
-   /*ssize_t result = ext_sendto(SocketDescriptor,buffer,length,flags,
-                                 (sockaddr*)socketAddress,socketAddressLength);*/
-   ssize_t result = nsa_sendto(SocketDescriptor,buffer,length,flags,
-                                       (sockaddr*)socketAddress,socketAddressLength);
+   ssize_t result = ext_sendto(SocketDescriptor,buffer,length,flags,
+                                 (sockaddr*)socketAddress,socketAddressLength);
    if(result < 0) {
       LastError = errno;
       result    = -LastError;
@@ -934,8 +886,7 @@ ssize_t Socket::sendMsg(const struct msghdr* msg,
       setTypeOfService(trafficClass);
    }
 
-   //ssize_t result = ext_sendmsg(SocketDescriptor,msg,(int)flags);
-   ssize_t result = nsa_sendmsg(SocketDescriptor,msg,(int)flags);
+   ssize_t result = ext_sendmsg(SocketDescriptor,msg,(int)flags);
    if(result < 0) {
       LastError = errno;
       result    = -LastError;
@@ -1099,11 +1050,7 @@ bool Socket::getSocketAddress(SocketAddress& address) const
 {
    char      socketAddress[SocketAddress::MaxSockLen];
    socklen_t socketAddressLength = SocketAddress::MaxSockLen;
-   /*if(ext_getsockname(SocketDescriptor,(sockaddr*)&socketAddress,&socketAddressLength) == 0) {
-      address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
-      return(true);
-   }*/
-   if(nsa_getsockname(SocketDescriptor,(sockaddr*)&socketAddress,&socketAddressLength) == 0) {
+   if(ext_getsockname(SocketDescriptor,(sockaddr*)&socketAddress,&socketAddressLength) == 0) {
       address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
       return(true);
    }
@@ -1116,11 +1063,7 @@ bool Socket::getPeerAddress(SocketAddress& address) const
 {
    char      socketAddress[SocketAddress::MaxSockLen];
    socklen_t socketAddressLength = SocketAddress::MaxSockLen;
-   /*if(ext_getpeername(SocketDescriptor,(sockaddr*)&socketAddress,&socketAddressLength) == 0) {
-      address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
-      return(true);
-   }*/
-   if(nsa_getpeername(SocketDescriptor,(sockaddr*)&socketAddress,&socketAddressLength) == 0) {
+   if(ext_getpeername(SocketDescriptor,(sockaddr*)&socketAddress,&socketAddressLength) == 0) {
       address.setSystemAddress((sockaddr*)&socketAddress,socketAddressLength);
       return(true);
    }
